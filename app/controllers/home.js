@@ -9,6 +9,15 @@ exports.renderHome = function (req, res) {
     res.sendFile(path.join(global.ROOT_DIR, 'public', 'views', 'index.html'));
 }
 
+exports.logoutUser = function (req, res) {
+    req.session.destroy(function (err) {
+        if (err)
+            res.send({isSuccess: false});
+        else
+            res.send({isSuccess: true});
+    });
+}
+
 exports.loginUser = function (req, res) {
     var username = req.body.username;
     var password = req.body.password;
@@ -20,7 +29,7 @@ exports.loginUser = function (req, res) {
             req.session.regenerate(function (err) {
                 if (!err) {
                     req.session.user = adminUser;
-                    delete req.session.user['password'];
+                    req.session.user.password = undefined;
                     res.send({isSuccess: true});
                 }
             });

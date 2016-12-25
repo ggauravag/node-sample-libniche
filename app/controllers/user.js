@@ -14,3 +14,14 @@ exports.createUser = function(req, res) {
         }
     });
 }
+
+exports.searchUser = function(req,res) {
+    var username = req.query.username;
+
+    mongoose.model('User').find({username: new RegExp(username, 'i')}, function (err, users) {
+       if(err)
+           utils.handleError(err, res);
+       else
+           res.send({isSuccess: true, users: users});
+    });
+}

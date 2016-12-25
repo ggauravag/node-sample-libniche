@@ -6,6 +6,7 @@ var utils = require('../utils')
 
 exports.addBook = function (req, res) {
     var book = req.body;
+    book.available = true;
     mongoose.model('Book').create(book, function (err, savedBook) {
         if (err) {
             utils.handleError(err, res);
@@ -13,6 +14,18 @@ exports.addBook = function (req, res) {
             res.send({isSuccess: true, book: savedBook});
         }
     });
+}
+
+exports.getBooks = function (req, res) {
+    var bookName = req.query.searchTitle;
+
+    mongoose.model('Book').find({name : new RegExp(bookName, 'i')}, function (err, books) {
+        if(err)
+            utils.handleError(err, res);
+        else
+            res.send({isSuccess: true, books: books});
+    })
+
 }
 
 exports.deleteBook = function (req, res) {

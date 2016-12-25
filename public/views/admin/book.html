@@ -1,0 +1,64 @@
+<div>
+    <input type="text" class="form-control" ng-model="searchTitle" ng-change="searchBooks()"
+           placeholder="Enter Book Name">
+    <br>
+    <table class="table table-striped" ng-if="books.length > 0">
+        <thead>
+        <tr>
+            <th>Select</th>
+            <th>Book Name</th>
+            <th>Book Author</th>
+            <th>Available</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="book in books">
+            <td>
+                <input type="radio" ng-model="bookDetails.book" ng-value="book">
+            </td>
+            <td>{{ book.name }}</td>
+            <td>{{ book.author }}</td>
+            <td ng-bind="book.available"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div ng-show="books.length > 0 && bookDetails.book != undefined && bookDetails.book.available">
+        <input type="text" class="form-control" ng-model="username" ng-change="searchUser()"
+               placeholder="Enter Username">
+        <br>
+        <table class="table table-striped" ng-if="users.length > 0">
+            <thead>
+            <tr>
+                <th>Select</th>
+                <th>Username</th>
+                <th>Name</th>
+                <th>Contact Number</th>
+                <th>Email</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="user in users">
+                <td>
+                    <input type="radio" ng-model="bookDetails.user" ng-value="user">
+                </td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.first_name }} {{ user.last_name }}</td>
+                <td>{{ user.contact_number }}</td>
+                <td>{{ user.email }}</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div ng-if="users.length > 0" class="row">
+            <label for="dueDate" class="col-sm-1">
+                Due Date
+            </label>
+            <input type="date" id="dueDate" class="col-sm-3" ng-model="bookDetails.due_date">
+        </div>
+        <br>
+        <div ng-if="users.length > 0" class="col-sm-12 text-center">
+            <button class="btn btn-primary" ng-click="borrowBook()">Borrow Book</button>
+        </div>
+    </div>
+</div>
