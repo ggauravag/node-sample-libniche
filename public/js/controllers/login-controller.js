@@ -20,7 +20,7 @@ function loginController($scope, ajaxService, AuthService, $state) {
                 $scope.user.invalidUser = false;
                 ajaxService.getUser().then(function (response) {
                     AuthService.setUser(response.data.user);
-                    $state.go('book');
+                    $state.go('home');
                 });
             } else {
                 $scope.user.invalidUser = true;

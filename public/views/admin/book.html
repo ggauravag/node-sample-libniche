@@ -1,4 +1,7 @@
 <div>
+
+    <div class="alert alert-success" role="alert" ng-if="message !== ''" ng-bind="message"></div>
+    <div class="alert alert-danger" role="alert" ng-if="errMessage !== ''" ng-bind="errMessage"></div>
     <input type="text" class="form-control" ng-model="searchTitle" ng-change="searchBooks()"
            placeholder="Enter Book Name">
     <br>

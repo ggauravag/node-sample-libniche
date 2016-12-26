@@ -16,6 +16,16 @@ function bookController($scope, UserService, BookService) {
     $scope.users = [];
     $scope.username = "";
 
+    $scope.reset = function () {
+        $scope.books = [];
+        $scope.searchTitle = "";
+        $scope.isLoading = false;
+        $scope.book = {};
+        $scope.bookDetails = {};
+        $scope.users = [];
+        $scope.username = "";
+    }
+
     $scope.addBook = function () {
         $scope.isLoading = true;
         BookService.addBook($scope.book).then(function (response) {
@@ -72,10 +82,12 @@ function bookController($scope, UserService, BookService) {
         BookService.borrowBook($scope.transaction).then(function (response) {
             $scope.isLoading = true;
             if (response.data.isSuccess) {
-                $scope.message = "Book successfully borrowed";
+                $scope.message = "Book '"+ $scope.bookDetails.book['name'] +"' successfully borrowed";
             } else {
                 $scope.errMessage = "Unable to borrow book !";
             }
+
+            $scope.reset();
         });
     }
 

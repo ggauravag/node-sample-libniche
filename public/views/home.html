@@ -17,7 +17,9 @@
             <td ng-bind="transaction.book.name"></td>
             <td ng-bind="transaction.due_date"></td>
             <td ng-bind="transaction.type"></td>
-            <td></td>
+            <td>
+                <button ng-if="transaction.type === 'BORROW'" ng-click="returnBook(transaction)" class="btn btn-success">Return Book</button>
+            </td>
         </tr>
         </tbody>
     </table>
