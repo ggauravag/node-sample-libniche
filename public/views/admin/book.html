@@ -1,7 +1,12 @@
 <div>
 
     <div class="alert alert-success" role="alert" ng-if="message !== ''" ng-bind="message"></div>
-    <div class="alert alert-danger" role="alert" ng-if="errMessage !== ''" ng-bind="errMessage"></div>
+    <div class="alert alert-danger" role="alert" ng-if="errMessage !== ''" >
+        <p>{[ errMessage }}</p>
+        <ul>
+            <li ng-repeat="err in errors">{{err.message}}</li>
+        </ul>
+    </div>
     <input type="text" class="form-control" ng-model="searchTitle" ng-change="searchBooks()"
            placeholder="Enter Book Name">
     <br>

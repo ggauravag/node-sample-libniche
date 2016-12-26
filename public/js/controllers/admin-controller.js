@@ -39,7 +39,7 @@ function adminController($scope, AdminService, BookService) {
                 $scope.reset();
                 self.init();
             } else {
-                $scope.errMessage = 'Unable to return the book';
+                $scope.errMessage = response.data.message;
                 $scope.message = '';
             }
         });

@@ -11,6 +11,8 @@ function userController($scope, UserService) {
     $scope.message = "";
     $scope.errMessage = "";
 
+    $scope.errors = [];
+
     $scope.reset = function () {
         $scope.user = {};
         $scope.users = [];
@@ -22,8 +24,11 @@ function userController($scope, UserService) {
            if(response.data.isSuccess) {
                $scope.message = "User Added successfully";
                $scope.reset();
+               $scope.errMessage = "";
            } else {
-               $scope.errMessage = "Unable to add user";
+               $scope.errMessage = response.data.message;
+               $scope.errors = response.data.errors;
+               $scope.message = "";
            }
         });
     }
@@ -37,10 +42,14 @@ function userController($scope, UserService) {
                     $scope.users = response.data.users;
                     if($scope.users.length === 0) {
                         $scope.errMessage = 'No user found with username ' + $scope.select.searchUsername;
-                    } else
+                        $scope.message = "";
+                    } else {
                         $scope.errMessage = "";
+                        $scope.message = "";
+                    }
                 } else {
-                    $scope.message = "Error while searching for users";
+                    $scope.errMessage = response.data.message;
+                    $scope.message = "";
                 }
             }).then(function () {
                 $scope.isLoading = false;
@@ -48,6 +57,7 @@ function userController($scope, UserService) {
         } else {
             $scope.reset();
             $scope.errMessage = '';
+            $scope.message = "";
         }
 
     }

@@ -57,7 +57,6 @@ libnicheApp.run(function ($rootScope, $state, AuthService) {
     $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
         if (toState.authenticate && !AuthService.isAuthenticated()) {
             // User isn’t authenticated
-
             // Try re logging in user
             AuthService.getUser().then(function (response) {
                 AuthService.setUser(response.data.user);

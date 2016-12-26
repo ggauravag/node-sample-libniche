@@ -3,7 +3,6 @@
  */
 function mainController(AuthService) {
     var self = this;
-
     self.authService = AuthService;
 }
 

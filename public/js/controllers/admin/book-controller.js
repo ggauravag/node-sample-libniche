@@ -16,6 +16,8 @@ function bookController($scope, UserService, BookService) {
     $scope.users = [];
     $scope.username = "";
 
+    $scope.errors = [];
+
     $scope.reset = function () {
         $scope.books = [];
         $scope.searchTitle = "";
@@ -32,8 +34,11 @@ function bookController($scope, UserService, BookService) {
             if(response.data.isSuccess) {
                 $scope.reset();
                 $scope.message = 'Book successfully deleted';
+                $scope.errMessage = "";
             } else {
-                $scope.errMessage = 'Unable to delete book';
+                $scope.errMessage = response.data.message;
+                $scope.message = "";
+                $scope.errors = response.data.errors;
             }
         });
     }
@@ -43,8 +48,12 @@ function bookController($scope, UserService, BookService) {
         BookService.addBook($scope.book).then(function (response) {
             if (response.data.isSuccess) {
                 $scope.message = "Book Successfully Added";
+                $scope.errMessage = "";
+                $scope.reset();
             } else {
-                $scope.errMessage = "Error while adding book";
+                $scope.errMessage = response.data.message;
+                $scope.message = "";
+                $scope.errors = response.data.errors;
             }
         }).then(function () {
             $scope.isLoading = false;
@@ -57,8 +66,11 @@ function bookController($scope, UserService, BookService) {
             BookService.searchBooks($scope.searchTitle).then(function (response) {
                 if (response.data.isSuccess) {
                     $scope.books = response.data.books;
+                    $scope.errMessage = '';
+                    $scope.message = '';
                 } else {
-                    $scope.message = "Error while searching books";
+                    $scope.errMessage = response.data.message;
+                    $scope.message = '';
                 }
             }).then(function () {
                 $scope.isLoading = false;
@@ -75,13 +87,13 @@ function bookController($scope, UserService, BookService) {
                 if (response.data.isSuccess) {
                     $scope.users = response.data.users;
                 } else {
-                    $scope.message = "Error while searching for users";
+                    $scope.message = response.data.message;
                 }
             }).then(function () {
                 $scope.isLoading = false;
             });
         } else {
-            $scope.reset();
+            $scope.users = [];
         }
     }
 
@@ -98,8 +110,11 @@ function bookController($scope, UserService, BookService) {
             $scope.isLoading = true;
             if (response.data.isSuccess) {
                 $scope.message = "Book '"+ $scope.bookDetails.book['name'] +"' successfully borrowed";
+                $scope.errMessage = '';
             } else {
-                $scope.errMessage = "Unable to borrow book !";
+                $scope.errMessage = response.data.message;
+                $scope.message = '';
+                $scope.errors = response.data.errors;
             }
 
             $scope.reset();

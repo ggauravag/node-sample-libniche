@@ -34,7 +34,6 @@ exports.deleteBook = function (req, res) {
         if (err) {
             utils.handleError(err, res);
         } else if(deletedBook) {
-            console.log('Book Deleted with id: ' + deletedBook.id);
             res.send({isSuccess: true});
         } else {
             res.send({isSuccess: false, message: "No book exists with given id"});
