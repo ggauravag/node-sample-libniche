@@ -14,7 +14,7 @@ module.exports = function (server, auth) {
     server.post('/api/login', homeController.loginUser);
     server.post('/api/logout', auth, homeController.logoutUser);
 
-    server.post('/api/admin/borrow-book', auth, adminController.borrowBook);
+    server.put('/api/admin/borrow-book', auth, adminController.borrowBook);
     server.put('/api/admin/return-book', auth, adminController.returnBook);
     server.get('/api/admin/transactions', auth, adminController.getTransactions);
     server.post('/api/admin', adminController.createAdmin);

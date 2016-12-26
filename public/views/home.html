@@ -1,10 +1,13 @@
 <div ng-init="adminCtrl.init()">
+    <div class="alert alert-success" role="alert" ng-if="message !== ''" ng-bind="message"></div>
+    <div class="alert alert-danger" role="alert" ng-if="errMessage !== ''" ng-bind="errMessage"></div>
     <table class="table table-striped">
         <thead>
         <tr>
             <th>Transaction Id</th>
             <th>User</th>
             <th>Book</th>
+            <th>Transaction Date</th>
             <th>Due Date</th>
             <th>Type</th>
             <th>Options</th>
@@ -15,10 +18,11 @@
             <td ng-bind="transaction['_id']"></td>
             <td>{{ transaction.user.first_name }} {{ transaction.user.last_name }}</td>
             <td ng-bind="transaction.book.name"></td>
-            <td ng-bind="transaction.due_date"></td>
+            <td ng-bind="transaction.date | date:'dd-MM-yyyy hh:mm:ss'"></td>
+            <td ng-bind="transaction.due_date | date:'dd-MM-yyyy'"></td>
             <td ng-bind="transaction.type"></td>
             <td>
-                <button ng-if="transaction.type === 'BORROW'" ng-click="returnBook(transaction)" class="btn btn-success">Return Book</button>
+                <button ng-if="transaction.type === 'BORROW' && transaction.isNonReturned" ng-click="returnBook(transaction)" class="btn btn-success">Return Book</button>
             </td>
         </tr>
         </tbody>

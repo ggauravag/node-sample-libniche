@@ -13,12 +13,17 @@ libnicheApp.config(function ($stateProvider, $urlRouterProvider, $locationProvid
             templateUrl: 'views/login.html',
             controller: 'LoginController as loginCtrl'
         })
-
         // ABOUT PAGE AND MULTIPLE NAMED VIEWS =================================
         .state('home', {
             url: '/home',
             templateUrl: 'views/home.html',
             controller: 'AdminController as adminCtrl',
+            authenticate: true
+        })
+        .state('add-user', {
+            url: '/add-user',
+            templateUrl: 'views/admin/add-user.html',
+            controller: 'UserController as userCtrl',
             authenticate: true
         })
         .state('user', {
@@ -52,8 +57,14 @@ libnicheApp.run(function ($rootScope, $state, AuthService) {
     $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
         if (toState.authenticate && !AuthService.isAuthenticated()) {
             // User isn’t authenticated
-            $state.transitionTo("login");
-            event.preventDefault();
+
+            // Try re logging in user
+            AuthService.getUser().then(function (response) {
+                AuthService.setUser(response.data.user);
+            }, function (errResponse) {
+                $state.transitionTo("login");
+                event.preventDefault();
+            });
         }
     });
 });

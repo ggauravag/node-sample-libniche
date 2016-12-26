@@ -20,6 +20,7 @@
     <script src="js/controllers/login-controller.js"></script>
     <script src="js/controllers/admin-controller.js"></script>
     <script src="js/controllers/admin/book-controller.js"></script>
+    <script src="js/controllers/admin/user-controller.js"></script>
 </head>
 <body ng-app="libnicheApp" ng-controller="MainController as mainCtrl">
 
@@ -33,6 +34,9 @@
     </ul>
     <ul class="nav navbar-nav" ng-if="mainCtrl.authService.isAuthenticated()">
         <li><a ui-sref="user">Users</a></li>
+    </ul>
+    <ul class="nav navbar-nav" ng-if="mainCtrl.authService.isAuthenticated()">
+        <li><a ui-sref="add-user">Add User</a></li>
     </ul>
     <ul class="nav navbar-nav" ng-if="mainCtrl.authService.isAuthenticated()">
         <li><a ui-sref="book">Books</a></li>

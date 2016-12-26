@@ -13,9 +13,6 @@ function ajaxService($http) {
         });
     }
 
-    self.getUser = function () {
-        return $http.get('/api/admin');
-    }
 }
 
 function userService($http) {
@@ -23,6 +20,10 @@ function userService($http) {
 
     self.searchUser = function (username) {
         return $http.get('/api/user/search?username=' + username);
+    }
+
+    self.addUser = function (user) {
+        return $http.post('/api/user', user);
     }
 }
 
@@ -42,7 +43,7 @@ function bookService($http) {
     }
 
     self.borrowBook = function (bookDetails) {
-        return $http.post('/api/admin/borrow-book', bookDetails);
+        return $http.put('/api/admin/borrow-book', bookDetails);
     }
 
     self.returnBook = function (bookDetails) {
@@ -52,9 +53,13 @@ function bookService($http) {
     self.addBook = function (book) {
         return $http.post('/api/book', book);
     }
+
+    self.deleteBook = function(bookId) {
+        return $http.delete('/api/book/' + bookId);
+    }
 }
 
-function authService() {
+function authService($http) {
     var self = this;
     self.user = {};
     self.setUser = function (user) {
@@ -69,6 +74,10 @@ function authService() {
         delete self.user;
         self.user = {};
         return $http.post('/api/logout');
+    }
+
+    self.getUser = function () {
+        return $http.get('/api/admin');
     }
 }
 

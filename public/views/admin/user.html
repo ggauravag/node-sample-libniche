@@ -1,3 +1,29 @@
 <div>
-
+    <div class="alert alert-success" role="alert" ng-if="message !== ''" ng-bind="message"></div>
+    <div class="alert alert-danger" role="alert" ng-if="errMessage !== ''" ng-bind="errMessage"></div>
+    <input type="text" class="form-control" ng-model="select.searchUsername" ng-change="searchUsers()"
+           placeholder="Enter Username">
+    <br>
+    <table class="table table-striped" ng-if="users.length > 0">
+        <thead>
+        <tr>
+            <th>Select</th>
+            <th>User First Name</th>
+            <th>User Last Name</th>
+            <th>Email</th>
+            <th>Contact Number</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="user in users">
+            <td>
+                <input type="radio" ng-model="select.user" ng-value="user">
+            </td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.first_name }} {{ user.last_name }}</td>
+            <td>{{ user.contact_number }}</td>
+            <td>{{ user.email }}</td>
+        </tr>
+        </tbody>
+    </table>
 </div>

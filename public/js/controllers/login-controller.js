@@ -18,7 +18,7 @@ function loginController($scope, ajaxService, AuthService, $state) {
         ajaxService.loginUser(userLoginData).then(function (response) {
             if (response.data.isSuccess) {
                 $scope.user.invalidUser = false;
-                ajaxService.getUser().then(function (response) {
+                AuthService.getUser().then(function (response) {
                     AuthService.setUser(response.data.user);
                     $state.go('home');
                 });

@@ -25,6 +25,18 @@ function bookController($scope, UserService, BookService) {
         $scope.users = [];
         $scope.username = "";
     }
+    
+    $scope.removeBook = function (book) {
+        var bookId = book['_id'];
+        BookService.deleteBook(bookId).then(function (response) {
+            if(response.data.isSuccess) {
+                $scope.reset();
+                $scope.message = 'Book successfully deleted';
+            } else {
+                $scope.errMessage = 'Unable to delete book';
+            }
+        });
+    }
 
     $scope.addBook = function () {
         $scope.isLoading = true;
@@ -51,7 +63,8 @@ function bookController($scope, UserService, BookService) {
             }).then(function () {
                 $scope.isLoading = false;
             });
-        }
+        } else
+            $scope.reset();
     }
 
     $scope.searchUser = function () {
@@ -67,6 +80,8 @@ function bookController($scope, UserService, BookService) {
             }).then(function () {
                 $scope.isLoading = false;
             });
+        } else {
+            $scope.reset();
         }
     }
 

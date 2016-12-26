@@ -6,7 +6,8 @@ var mongoose = require('mongoose');
 var TransactionSchema = new mongoose.Schema({
     user: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
     book: {type: mongoose.Schema.Types.ObjectId, ref: 'Book', required: true},
-    due_date: {type: Date, required: true},
+    due_date: {type: Date},
+    date: {type: Date},
     type: {type: String, required: true}
 });
 
@@ -22,6 +23,7 @@ TransactionSchema.path('book').validate(function (value, done) {
 
 TransactionSchema.pre("save", function (next) {
     var self = this;
+    self.date = new Date();
     mongoose.model('Book').findOne({_id: self.book}, function (err, book) {
         if (err) {
             next(err);
