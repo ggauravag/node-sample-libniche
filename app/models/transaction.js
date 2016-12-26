@@ -19,22 +19,25 @@ TransactionSchema.path('book').validate(function (value, done) {
     });
 }, 'Requested book is not valid');
 
-TransactionSchema.pre("save", true, function (next, done) {
+
+TransactionSchema.pre("save", function (next) {
     var self = this;
     mongoose.model('Book').findOne({_id: self.book}, function (err, book) {
         if (err) {
-            done(err);
+            next(err);
         } else if (book) {
             if (book.available && self.type === 'RETURN')
-                done(new Error("Book is already returned, cannot process transaction"));
+                next(new Error("Book is already returned, cannot process transaction"));
             else if (!book.available && self.type === 'BORROW')
-                done(new Error('Book is not available currently, to borrow'));
+                next(new Error('Book is not available currently to borrow'));
+            else
+                next();
         } else {
-            done();
+            next();
         }
     });
-    next();
 });
+
 
 TransactionSchema.path('user').validate(function (value, done) {
     mongoose.model('User').findOne({_id: value}, function (err, user) {
@@ -45,4 +48,4 @@ TransactionSchema.path('user').validate(function (value, done) {
     });
 }, 'Requested user is not valid');
 
-module.exports = mongoose.model('Transaction', TransactionSchema);
+module.exports = mongoose.model('LibTransaction', TransactionSchema);

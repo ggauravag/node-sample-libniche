@@ -64,8 +64,8 @@ function bookController($scope, UserService, BookService) {
         $scope.isLoading = false;
 
         $scope.transaction = {};
-        $scope.transaction.bookId = $scope.bookDetails.book['_id'];
-        $scope.transaction.userId = $scope.bookDetails.user['_id'];
+        $scope.transaction.book = $scope.bookDetails.book['_id'];
+        $scope.transaction.user = $scope.bookDetails.user['_id'];
         $scope.transaction.type = 'BORROW';
         $scope.transaction.due_date = $scope.bookDetails.due_date.getTime();
 

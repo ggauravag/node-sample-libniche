@@ -25,6 +25,7 @@ var db = require('./config/db');
 var port = process.env.PORT || 3000;
 
 // mongodb connection establishment
+mongoose.Promise = require('bluebird');
 mongoose.connect(db.url);
 mongoose.connection.on('connected', function () {
     console.log('Mongoose default connection open to ' + db.url);

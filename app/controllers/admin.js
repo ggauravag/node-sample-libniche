@@ -21,7 +21,7 @@ exports.getAdmin = function (req, res) {
 }
 
 exports.getTransactions = function (req, res) {
-    mongoose.model('Transaction').find({}).populate('user book').sort('-due_date').exec(function (err, transactions) {
+    mongoose.model('LibTransaction').find({}).populate('user book').sort('-due_date').exec(function (err, transactions) {
         if (err)
             utils.handleError(err, res);
         else
@@ -31,42 +31,24 @@ exports.getTransactions = function (req, res) {
 
 exports.borrowBook = function (req, res) {
     var data = req.body;
-    var bookId = data.bookId;
-    var userId = data.userId;
-    var due_date = new Date(data.due_date);
-    console.log('Request Received');
+    var bookId = data.book;
+    var userId = data.user;
+    data.due_date = new Date(data.due_date);
+
     if (!userId || !bookId) {
         res.send({isSuccess: false, message: "Book or user id missing"});
     } else {
+        data.type = 'BORROW';
 
-        var borrowTx = {
-            user: userId,
-            book: bookId,
-            due_date: due_date,
-            type: 'BORROW'
-        };
-        console.log('created');
-        mongoose.model('Transaction').create(borrowTx, function (err, savedTx) {
+        mongoose.model('LibTransaction').create(data, function (err, savedTx) {
             if (err) {
-                console.log('Error');
                 utils.handleError(err, res);
             } else {
-                console.log('Transaction created');
-                mongoose.model('Book').findOne({_id: savedTx.book}, function (err, book) {
-                    if (err || !book) {
-                        console.log('No book');
-                        mongoose.model('Transaction').findByIdAndRemove(savedTx.id);
-                        res.send({
-                            isSuccess: false,
-                            message: 'Unable to process transaction, try again !',
-                            transaction: savedTx
-                        });
-                    } else {
-                        console.log('Request Received');
-                        book.available = false;
-                        book.update();
+                mongoose.model('Book').update({_id: savedTx.book}, {$set: {available: false}}, function (err, updatedBook) {
+                    if (err)
+                        utils.handleError(err, res);
+                    else
                         res.send({isSuccess: true, transaction: savedTx});
-                    }
                 });
             }
         });
@@ -88,7 +70,7 @@ exports.returnBook = function (req, res) {
             type: 'RETURN'
         };
 
-        mongoose.model('Transaction').create(returnTx, function (err, savedTx) {
+        mongoose.model('LibTransaction').create(returnTx, function (err, savedTx) {
             if (err) {
                 utils.handleError(err, res);
             } else {
